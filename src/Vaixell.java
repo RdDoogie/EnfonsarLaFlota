@@ -1,7 +1,6 @@
 public class Vaixell {
     private PartVaixell[] parts;
     private int mida;
-    private boolean estaEnfonsat;
     public Vaixell(int mida) {
         this.mida = mida;
         this.parts = new PartVaixell[mida];
@@ -13,14 +12,15 @@ public class Vaixell {
     public PartVaixell[] getParts(){
         return parts;
     }
-    public boolean comprovarSiEstaEnfonsat() {
+
+    public boolean estaEnfonsat() {
         int count = 0;
         for (int i = 0; i < parts.length; i++){
-            if (parts[i].estaTocat()){
-                count++;
+            if (! parts[i].estaTocat()){
+                return false;
             }
         }
-        return count == mida;
+        return true;
     }
 
     public void rebreImpacte(int x, int y){

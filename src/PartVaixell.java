@@ -1,10 +1,10 @@
 public class PartVaixell {
     private int coordenadaX;
     private int coordenadaY;
-    private EstatPartVaixell estat;
+    private boolean estaDisparat = false;
 
     public void rebreImpacte(){
-        this.estat = EstatPartVaixell.TOCAT;
+        this.estaDisparat = true;
     }
 
     public void setCoordenades(int coordenadaX, int coordenadaY) {
@@ -13,7 +13,7 @@ public class PartVaixell {
     }
 
     public boolean estaTocat(){
-        return estat == EstatPartVaixell.TOCAT;
+        return estaDisparat;
     }
 
     public int getCoordenadaX (){

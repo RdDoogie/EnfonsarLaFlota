@@ -2,18 +2,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Taulell{
-    private EstatCasella[][] graella;
+    private Casella[][] graella;
     private int mida;
     private List<Vaixell> vaixells;
 
-    public Taulell (EstatCasella[] graella, Vaixell[] vaixells, int mida){
+
+    public Taulell(int mida){
+        for(int i = 0; i < mida; i++){
+            for(int j = 0;j<mida; j++){
+                this.graella[i][j] = new Casella();
+            }
+        }
+    }
+
+    public Taulell (Casella[][] graella, Vaixell[] vaixells, int mida){
         this.mida = mida;
-        this.graella = new EstatCasella[mida][mida];
+        this.graella = new Casella[mida][mida];
         this.vaixells = new ArrayList<>();
 
         for(int i = 0; i < mida; i++){
             for(int j = 0;j<mida; j++){
-                this.graella[i][j] = EstatCasella.AIGUA;
+                this.graella[i][j] = new Casella();
             }
         }
     }
@@ -34,7 +43,7 @@ public class Taulell{
                 filaActual = x + i;
             }
 
-            this.graella[filaActual][colActual] = EstatCasella.VAIXELL_INTACTE;
+            this.graella[filaActual][colActual].setContingut(new PartVaixell());
 
             vaixell.getParts()[i].setCoordenades(filaActual, colActual);
         }
@@ -48,15 +57,41 @@ public class Taulell{
             if (x + vaixell.getMida() > graella.length) return false;
 
             for (int i = 0; i < vaixell.getMida(); i++) {
-                if (graella[x + i][y] != EstatCasella.AIGUA) return false;
+                if (!graella[x + i][y].estaDisparada() || graella[x + i][y].esVaixell()) return false;
             }
         } else if (orientacio == Orientacio.VERTICAL) {
             if (y + vaixell.getMida() > graella[0].length) return false;
 
             for (int i = 0; i < vaixell.getMida(); i++) {
-                if (graella[x][y + i] != EstatCasella.AIGUA) return false;
+                if (!graella[x][y + i].estaDisparada() || graella[x + i][y].esVaixell()) return false;
             }
         }
         return true;
+    }
+
+
+
+    public boolean totsElsVaixellsEnfonsats(){
+        for(int i = 0; i<graella.length; i++){
+            for (int j = 0; j<graella[i].length;j++){
+                if(!graella[i][j].getContingut().estaTocat()){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void imprimirTaulell(){
+        for (int i = 0; i<graella.length;i++) {
+            for (int j = 0; j<graella[i].length;j++){
+                if(j != 9){
+                    System.out.print(graella[i][j].obtenirCaracter() + " ");
+                } else {
+                    System.out.print(graella[i][j].obtenirCaracter());
+                }
+            }
+            System.out.println();
+        }
     }
 }
