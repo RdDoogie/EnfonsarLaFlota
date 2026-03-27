@@ -42,12 +42,12 @@ public class Joc {
 
 
         while (!partidaAcabada) {
-            System.out.println("\n--- TORN DE " + jugadorActual.getNom().toUpperCase() + " ---");
+            System.out.println("Torn De " + jugadorActual.getNom().toUpperCase());
             rival.getTaulellPropi().mostrarTaulell(true);
             jugadorActual.escollirObjectiu(rival.getTaulellPropi());
 
             if (rival.hasPerdut()) {
-                System.out.println("VICTÒRIA! " + jugadorActual.getNom() + " ha destruït tota la flota enemiga!");
+                System.out.println("Victoria! " + jugadorActual.getNom() + " ha deestruit tota la flota enemiga!");
                 partidaAcabada = true;
             } else {
                 Jugador temporal = jugadorActual;

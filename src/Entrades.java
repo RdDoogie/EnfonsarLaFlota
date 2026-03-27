@@ -19,7 +19,7 @@ public class Entrades {
                 coordenada = scanner.nextInt();
                 valid = true;
             } else {
-                System.out.println("Error: Prefavor, introdueix un numero valid.");
+                System.out.println("Error: Perfavor, introdueix un numero valid.");
 
                 scanner.next();
             }

@@ -16,9 +16,5 @@ public class PartVaixell {
         return estaDisparat;
     }
 
-    public int getCoordenadaX (){
-        return this.coordenadaX;
-    }
 
-    public int getCoordenadaY(){ return this.coordenadaY; }
 }
