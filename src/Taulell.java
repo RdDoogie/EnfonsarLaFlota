@@ -8,23 +8,19 @@ public class Taulell{
 
 
     public Taulell(int mida){
-        for(int i = 0; i < mida; i++){
-            for(int j = 0;j<mida; j++){
-                this.graella[i][j] = new Casella();
-            }
-        }
-    }
-
-    public Taulell (Casella[][] graella, Vaixell[] vaixells, int mida){
         this.mida = mida;
         this.graella = new Casella[mida][mida];
-        this.vaixells = new ArrayList<>();
-
         for(int i = 0; i < mida; i++){
             for(int j = 0;j<mida; j++){
                 this.graella[i][j] = new Casella();
             }
         }
+        this.vaixells = new ArrayList<>();
+    }
+
+
+    public Casella getCasellaConcreta(int x, int y){
+        return graella[x][y];
     }
 
     public boolean colLocarVaixell(Vaixell vaixell, int x, int y, Orientacio orientacio) {
@@ -43,27 +39,28 @@ public class Taulell{
                 filaActual = x + i;
             }
 
-            this.graella[filaActual][colActual].setContingut(new PartVaixell());
-
+            this.graella[filaActual][colActual].setContingut(vaixell.getParts()[i]);
+            this.graella[filaActual][colActual].setVaixellMare(vaixell);
             vaixell.getParts()[i].setCoordenades(filaActual, colActual);
         }
 
         this.vaixells.add(vaixell);
 
+
         return true;
     }
     private boolean posicioEsValida(Vaixell vaixell, int x, int y, Orientacio orientacio) {
         if (orientacio == Orientacio.HORITZONTAL) {
-            if (x + vaixell.getMida() > graella.length) return false;
-
-            for (int i = 0; i < vaixell.getMida(); i++) {
-                if (!graella[x + i][y].estaDisparada() || graella[x + i][y].esVaixell()) return false;
-            }
-        } else if (orientacio == Orientacio.VERTICAL) {
             if (y + vaixell.getMida() > graella[0].length) return false;
 
             for (int i = 0; i < vaixell.getMida(); i++) {
-                if (!graella[x][y + i].estaDisparada() || graella[x + i][y].esVaixell()) return false;
+                if (graella[x][y + i].teVaixell()) return false;
+            }
+        } else if (orientacio == Orientacio.VERTICAL) {
+            if (x + vaixell.getMida() > graella.length) return false;
+
+            for (int i = 0; i < vaixell.getMida(); i++) {
+                if (graella[x + i][y].teVaixell()) return false;
             }
         }
         return true;
@@ -71,27 +68,24 @@ public class Taulell{
 
 
 
-    public boolean totsElsVaixellsEnfonsats(){
-        for(int i = 0; i<graella.length; i++){
-            for (int j = 0; j<graella[i].length;j++){
-                if(!graella[i][j].getContingut().estaTocat()){
-                    return false;
-                }
+    public boolean totsElsVaixellsEnfonsats() {
+        for (Vaixell v : this.vaixells) {
+            if (!v.estaEnfonsat()) {
+                return false;
             }
         }
         return true;
     }
 
-    public void imprimirTaulell(){
-        for (int i = 0; i<graella.length;i++) {
-            for (int j = 0; j<graella[i].length;j++){
-                if(j != 9){
-                    System.out.print(graella[i][j].obtenirCaracter() + " ");
-                } else {
-                    System.out.print(graella[i][j].obtenirCaracter());
-                }
+    public void mostrarTaulell(boolean amagarVaixells) {
+        System.out.println("  0 1 2 3 4 5 6 7 8 9");
+        for (int i = 0; i < graella.length; i++) {
+            System.out.print(i + " ");
+            for (int j = 0; j < graella[i].length; j++) {
+                System.out.print(graella[i][j].obtenirCaracter(amagarVaixells) + " ");
             }
             System.out.println();
         }
+        System.out.println();
     }
 }

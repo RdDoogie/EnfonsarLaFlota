@@ -1,32 +1,27 @@
 public class Casella {
     private boolean disparada;
     private PartVaixell contingut;
+    private Vaixell vaixellMare;
 
     public Casella() {
         this.disparada = false;
         this.contingut = null;
     }
-    public PartVaixell getContingut(){
-        return contingut;
-    }
-    public boolean estaDisparada(){
-        return disparada;
-    }
 
-    public boolean esVaixell(){
-        return contingut==null;
-    }
+
+
 
     public void setContingut(PartVaixell contingut){
         this.contingut = contingut;
     }
 
-    public void assignarVaixell(PartVaixell part){
-        this.contingut = part;
-    }
 
     public boolean teVaixell(){
         return this.contingut != null;
+    }
+
+    public void setVaixellMare(Vaixell vaixell) {
+        this.vaixellMare = vaixell;
     }
 
     public boolean rebreTret() {
@@ -38,22 +33,37 @@ public class Casella {
         this.disparada = true;
 
         if (this.teVaixell()) {
-            System.out.println("Tocat!");
-
             this.contingut.rebreImpacte();
+
+            if (this.vaixellMare.estaEnfonsat()) {
+                System.out.println("Tocat i enfonsat!!");
+            } else {
+                System.out.println("Tocat!");
+            }
         } else {
             System.out.println("Aigua!");
         }
 
         return true;
 
-
         }
-    public char obtenirCaracter() {
-        if (!this.disparada) return 'A';
-        if (teVaixell()) return 'X';
-        return 'D';
+
+    public char obtenirCaracter(boolean amagarVaixells) {
+        if (!this.disparada){
+            if(this.teVaixell() && !amagarVaixells){
+                return 'V';
+            } else {
+                return 'A';
+            }
+        } else {
+            if (this.teVaixell()){
+                return 'X';
+            }else {
+                return 'D';
+            }
+        }
     }
+
     }
 
 
