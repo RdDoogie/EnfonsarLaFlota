@@ -7,20 +7,18 @@ public class Entrades {
         this.scanner = new Scanner(System.in);
     }
 
-
     public int obtenirCoordenada(String missatge) {
         int coordenada = -1;
         boolean valid = false;
 
         while (!valid) {
-            System.out.print(missatge);
+            Sortides.imprimirMissatge(missatge);
 
             if (scanner.hasNextInt()) {
                 coordenada = scanner.nextInt();
                 valid = true;
             } else {
-                System.out.println("Error: Perfavor, introdueix un numero valid.");
-
+                Sortides.mostrarErrorNumero();
                 scanner.next();
             }
         }
@@ -31,7 +29,7 @@ public class Entrades {
         Orientacio orientacioTriada = null;
 
         while (orientacioTriada == null) {
-            System.out.print("Vols el vaixell en Horitzontal (H) o en Vertical (V)? ");
+            Sortides.imprimirMissatge("Vols el vaixell en Horitzontal (H) o en Vertical (V)? ");
 
             String entrada = scanner.next().toUpperCase();
 
@@ -40,10 +38,9 @@ public class Entrades {
             } else if (entrada.equals("V")) {
                 orientacioTriada = Orientacio.VERTICAL;
             } else {
-                System.out.println("Error: Perfavor, introdueix H o V.");
+                Sortides.mostrarErrorOrientacio();
             }
         }
         return orientacioTriada;
     }
-
 }

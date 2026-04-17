@@ -1,53 +1,54 @@
 public class Joc {
-    private Jugador jugador1;
-    private Jugador jugador2;
-    private Entrades entrades;
+    private Jugador[] jugadors;
+    private Entrades entrades = new Entrades();
 
     public Joc(){
-        this.entrades = new Entrades();
-
-        this.jugador1 = new Jugador("Jugador 1", 10, this.entrades);
-        this.jugador2 = new Jugador("Jugador 2", 10, this.entrades);
+        this.jugadors = new Jugador[2];
+        this.jugadors[0] = new Jugador("Jugador 1", 10, this.entrades);
+        this.jugadors[1] = new Jugador("Jugador 2", 10, this.entrades);
     }
 
-    public void iniciarPartida(){
-        System.out.println("COMENÇA LA PARTIDA D'ENFONSAR LA FLOTA!");
-        Vaixell[] flotaInicial = {
+
+    private Vaixell[] generarFlota() {
+        return new Vaixell[]{
                 new Vaixell(TipusVaixell.PORTAVIONS),
                 new Vaixell(TipusVaixell.CUIRASSAT),
                 new Vaixell(TipusVaixell.CUIRASSAT),
                 new Vaixell(TipusVaixell.SUBMARI),
                 new Vaixell(TipusVaixell.SUBMARI),
-                //new Vaixell(TipusVaixell.SUBMARI),
                 new Vaixell(TipusVaixell.FRAGATA),
-                //new Vaixell(TipusVaixell.FRAGATA),
                 new Vaixell(TipusVaixell.FRAGATA),
                 new Vaixell(TipusVaixell.PATRULLER),
-                //new Vaixell(TipusVaixell.PATRULLER),
-                // new Vaixell(TipusVaixell.PATRULLER),
-                new Vaixell(TipusVaixell.PATRULLER),
+                new Vaixell(TipusVaixell.PATRULLER)
         };
-        System.out.println(jugador1.getNom() + " prepara la teva flota.");
-        jugador1.posicionarFlota(flotaInicial);
-        System.out.println(jugador2.getNom() + " prepara la teva flota.");
-        jugador2.posicionarFlota(flotaInicial);
+    }
+
+    public void iniciarPartida(){
+        Sortides.mostrarIniciPartida();
+
+        Sortides.mostrarPreparacioFlota(jugadors[0].getNom());
+        jugadors[0].posicionarFlota(generarFlota());
+
+        Sortides.mostrarPreparacioFlota(jugadors[1].getNom());
+        jugadors[1].posicionarFlota(generarFlota());
 
         buclePrincipal();
     }
 
     public void buclePrincipal(){
         boolean partidaAcabada = false;
-        Jugador jugadorActual = jugador1;
-        Jugador rival = jugador2;
-
+        Jugador jugadorActual = jugadors[0];
+        Jugador rival = jugadors[1];
 
         while (!partidaAcabada) {
-            System.out.println("Torn De " + jugadorActual.getNom().toUpperCase());
+            Sortides.mostrarTorn(jugadorActual.getNom());
+
             rival.getTaulellPropi().mostrarTaulell(true);
+
             jugadorActual.escollirObjectiu(rival.getTaulellPropi());
 
             if (rival.hasPerdut()) {
-                System.out.println("Victoria! " + jugadorActual.getNom() + " ha deestruit tota la flota enemiga!");
+                Sortides.mostrarVictoria(jugadorActual.getNom());
                 partidaAcabada = true;
             } else {
                 Jugador temporal = jugadorActual;
@@ -56,8 +57,6 @@ public class Joc {
             }
         }
 
-        System.out.println("Gràcies per jugar!");
+        Sortides.mostrarFi();
     }
-
 }
-

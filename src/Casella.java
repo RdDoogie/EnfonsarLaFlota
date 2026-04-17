@@ -1,23 +1,19 @@
 public class Casella {
     private boolean disparada;
-    private PartVaixell contingut;
+    private PartVaixell partVaixell;
     private Vaixell vaixellMare;
 
     public Casella() {
         this.disparada = false;
-        this.contingut = null;
+        this.partVaixell = null;
     }
 
-
-
-
-    public void setContingut(PartVaixell contingut){
-        this.contingut = contingut;
+    public void setPartVaixell(PartVaixell partVaixell){
+        this.partVaixell = partVaixell;
     }
-
 
     public boolean teVaixell(){
-        return this.contingut != null;
+        return this.partVaixell != null;
     }
 
     public void setVaixellMare(Vaixell vaixell) {
@@ -26,34 +22,33 @@ public class Casella {
 
     public boolean rebreTret() {
         if (this.disparada) {
-            System.out.println("Ja havies disparat en aquesta coordenada!");
+            Sortides.mostrarJaDisparat();
             return false;
-            }
+        }
 
         this.disparada = true;
 
         if (this.teVaixell()) {
-            this.contingut.rebreImpacte();
+            this.partVaixell.rebreImpacte();
 
             if (this.vaixellMare.estaEnfonsat()) {
-                System.out.println("Tocat i enfonsat!!");
+                Sortides.mostrarEnfonsat();
             } else {
-                System.out.println("Tocat!");
+                Sortides.mostrarTocat();
             }
         } else {
-            System.out.println("Aigua!");
+            Sortides.mostrarAigua();
         }
 
         return true;
-
-        }
+    }
 
     public char obtenirCaracter(boolean amagarVaixells) {
         if (!this.disparada){
             if(this.teVaixell() && !amagarVaixells){
                 return 'V';
             } else {
-                return 'A';
+                return '-';
             }
         } else {
             if (this.teVaixell()){
@@ -63,7 +58,4 @@ public class Casella {
             }
         }
     }
-
-    }
-
-
+}

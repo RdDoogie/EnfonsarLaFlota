@@ -6,7 +6,6 @@ public class Taulell{
     private int mida;
     private List<Vaixell> vaixells;
 
-
     public Taulell(int mida){
         this.mida = mida;
         this.graella = new Casella[mida][mida];
@@ -18,13 +17,15 @@ public class Taulell{
         this.vaixells = new ArrayList<>();
     }
 
-
     public Casella getCasellaConcreta(int x, int y){
         return graella[x][y];
     }
 
-    public boolean colLocarVaixell(Vaixell vaixell, int x, int y, Orientacio orientacio) {
+    public Casella[][] getGraella() {
+        return graella;
+    }
 
+    public boolean colLocarVaixell(Vaixell vaixell, int x, int y, Orientacio orientacio) {
         if (!posicioEsValida(vaixell, x, y, orientacio)) {
             return false;
         }
@@ -39,34 +40,28 @@ public class Taulell{
                 filaActual = x + i;
             }
 
-            this.graella[filaActual][colActual].setContingut(vaixell.getParts()[i]);
+            this.graella[filaActual][colActual].setPartVaixell(vaixell.getParts()[i]);
             this.graella[filaActual][colActual].setVaixellMare(vaixell);
             vaixell.getParts()[i].setCoordenades(filaActual, colActual);
         }
-
         this.vaixells.add(vaixell);
-
-
         return true;
     }
+
     private boolean posicioEsValida(Vaixell vaixell, int x, int y, Orientacio orientacio) {
         if (orientacio == Orientacio.HORITZONTAL) {
             if (y + vaixell.getMida() > graella[0].length) return false;
-
             for (int i = 0; i < vaixell.getMida(); i++) {
                 if (graella[x][y + i].teVaixell()) return false;
             }
         } else if (orientacio == Orientacio.VERTICAL) {
             if (x + vaixell.getMida() > graella.length) return false;
-
             for (int i = 0; i < vaixell.getMida(); i++) {
                 if (graella[x + i][y].teVaixell()) return false;
             }
         }
         return true;
     }
-
-
 
     public boolean totsElsVaixellsEnfonsats() {
         for (Vaixell v : this.vaixells) {
@@ -77,15 +72,8 @@ public class Taulell{
         return true;
     }
 
+
     public void mostrarTaulell(boolean amagarVaixells) {
-        System.out.println("  0 1 2 3 4 5 6 7 8 9");
-        for (int i = 0; i < graella.length; i++) {
-            System.out.print(i + " ");
-            for (int j = 0; j < graella[i].length; j++) {
-                System.out.print(graella[i][j].obtenirCaracter(amagarVaixells) + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
+        Sortides.mostrarTaulell(this.graella, amagarVaixells);
     }
 }
